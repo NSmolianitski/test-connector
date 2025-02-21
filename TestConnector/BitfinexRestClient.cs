@@ -2,6 +2,9 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.WebUtilities;
 using TestConnector.HQTestData;
+using TestConnector.Infrastructure.Channels.Candle;
+using TestConnector.Infrastructure.Channels.Trade;
+using TestConnector.Utility;
 
 namespace TestConnector;
 
@@ -31,19 +34,7 @@ public class BitfinexRestClient
             throw new InvalidOperationException($"Failed to deserialize response. Response string: {responseString}");
 
         var trades = result
-            .Select(elements =>
-            {
-                var amount = elements[2].GetDecimal();
-                return new Trade
-                {
-                    Pair = pair,
-                    Id = elements[0].GetInt32().ToString(),
-                    Time = DateTimeOffset.FromUnixTimeMilliseconds(elements[1].GetInt64()),
-                    Side = amount >= 0 ? "buy" : "sell",
-                    Amount = Math.Abs(amount),
-                    Price = elements[3].GetDecimal()
-                };
-            });
+            .Select(elements => TradeConverter.ToTrade(pair, elements));
 
         return trades;
     }
@@ -61,7 +52,7 @@ public class BitfinexRestClient
             {"end", to?.ToUnixTimeMilliseconds().ToString()},
             {"limit", count.ToString()},
         };
-        var interval = GetClosestInterval(periodInSec);
+        var interval = TimeUtility.GetClosestInterval(periodInSec);
         var url = QueryHelpers
             .AddQueryString($"{BaseAddress}/candles/trade:{interval}:t{pair}/hist", queryParams);
         
@@ -76,45 +67,8 @@ public class BitfinexRestClient
         if (result == null)
             throw new InvalidOperationException($"Failed to deserialize response. Response string: {responseString}");
 
-        var candles = result.Select(elements =>
-        {
-            var openPrice = elements[1].GetDecimal();
-            var closePrice = elements[2].GetDecimal();
-            var highPrice = elements[3].GetDecimal();
-            var lowPrice = elements[4].GetDecimal();
-            var totalVolume = elements[5].GetDecimal();
-            var totalPrice = (openPrice + closePrice + highPrice + lowPrice) / 4m * totalVolume;
-            return new Candle
-            {
-                Pair = pair,
-                OpenTime = DateTimeOffset.FromUnixTimeMilliseconds(elements[0].GetInt64()),
-                OpenPrice = openPrice,
-                ClosePrice = closePrice,
-                HighPrice = highPrice,
-                LowPrice = lowPrice,
-                TotalVolume = totalVolume,
-                TotalPrice = totalPrice
-            };
-        });
+        var candles = result.Select(element => CandleConverter.ToCandle(pair, element));
 
         return candles;
-    }
-
-    private string GetClosestInterval(int periodInSec)
-    {
-        var intervalData = new (int Seconds, string Interval)[]
-        {
-            (60, "1m"), (300, "5m"), (900, "15m"), (1800, "30m"),
-            (3600, "1h"), (10800, "3h"), (21600, "6h"), (43200, "12h"),
-            (86400, "1D"), (604800, "1W"), (1209600, "14D"), (2592000, "1M")
-        };
-
-        foreach (var (sec, interval) in intervalData)
-        {
-            if (periodInSec <= sec)
-                return interval;
-        }
-        
-        return intervalData[^1].Interval;
     }
 }

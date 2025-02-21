@@ -15,13 +15,15 @@ interface ITestConnector
 
     event Action<Trade> NewBuyTrade;
     event Action<Trade> NewSellTrade;
-    void SubscribeTrades(string pair, int maxCount = 100);
+    
+    // Убрал параметр maxCount, поскольку его нет в API Bitfinex
+    void SubscribeTrades(string pair);
     void UnsubscribeTrades(string pair);
 
     event Action<Candle> CandleSeriesProcessing;
 
-    void SubscribeCandles(string pair, int periodInSec, DateTimeOffset? from = null, DateTimeOffset? to = null,
-        long? count = 0);
+    // Убрал параметры from, to, count, поскольку их нет в API Bitfinex
+    void SubscribeCandles(string pair, int periodInSec);
 
     void UnsubscribeCandles(string pair);
 
