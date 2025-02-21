@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConnector", "TestConnec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConnector.Tests", "TestConnector.Tests\TestConnector.Tests.csproj", "{D6155AC9-A334-4861-BEC4-49DD829492D7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoCalculation", "CryptoCalculation\CryptoCalculation.csproj", "{4CD0179F-BFFD-4BED-99F5-90CF8DF7EBDA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{D6155AC9-A334-4861-BEC4-49DD829492D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6155AC9-A334-4861-BEC4-49DD829492D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6155AC9-A334-4861-BEC4-49DD829492D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CD0179F-BFFD-4BED-99F5-90CF8DF7EBDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CD0179F-BFFD-4BED-99F5-90CF8DF7EBDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CD0179F-BFFD-4BED-99F5-90CF8DF7EBDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CD0179F-BFFD-4BED-99F5-90CF8DF7EBDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

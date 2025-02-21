@@ -1,0 +1,55 @@
+﻿@model CryptoCalculation.Models.TotalPortfolioBalance
+
+<head>
+    <style>
+        .table {
+            width: 60%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+        }
+
+        .table th, .table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .title {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin-bottom: 20px;
+        }
+    </style>
+    <title>Portfolio Balance</title>
+</head>
+
+<h3 class="title">Portfolio Balance</h3>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Currency</th>
+        <th>Amount</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Currencies)
+    {
+        <tr>
+            <td>@item.Key</td>
+            <td>@item.Value</td>
+        </tr>
+    }
+    </tbody>
+</table>
