@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Text.Json;
 using Microsoft.AspNetCore.WebUtilities;
+using TestConnector.Application.Interfaces;
 using TestConnector.HQTestData;
 using TestConnector.Infrastructure.Channels.Candle;
 using TestConnector.Infrastructure.Channels.Trade;
@@ -8,7 +9,7 @@ using TestConnector.Utility;
 
 namespace TestConnector;
 
-public class BitfinexRestClient
+public class BitfinexRestClient : IRestClient
 {
     private const string BaseAddress = "https://api-pub.bitfinex.com/v2";
 

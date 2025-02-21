@@ -13,7 +13,7 @@ public static class TradeConverter
             Id = jsonElement[0].GetInt32().ToString(),
             Time = DateTimeOffset.FromUnixTimeMilliseconds(jsonElement[1].GetInt64()),
             Side = amount >= 0 ? "buy" : "sell",
-            Amount = Math.Abs(amount),
+            Amount = amount,
             Price = jsonElement[3].GetDecimal()
         };
     }

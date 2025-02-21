@@ -11,9 +11,9 @@ using TestConnector.Infrastructure.Processors.Messages;
 
 namespace TestConnector;
 
-public class BitfinexWebsocketClient : IDisposable
+public class BitfinexWebsocketClient : IWebSocketClient, IDisposable
 {
-    private readonly Uri _connectAddress = new Uri("wss://api-pub.bitfinex.com/ws/2");
+    private readonly Uri _connectAddress;
     private readonly ClientWebSocket _webSocketClient = new ClientWebSocket();
     private readonly CancellationTokenSource _cts = new CancellationTokenSource();
     private readonly ILogger<BitfinexWebsocketClient> _logger;
@@ -23,9 +23,10 @@ public class BitfinexWebsocketClient : IDisposable
     private readonly MessageProcessor _messageProcessor;
     private readonly EventAggregator _eventAggregator = new();
 
-    public BitfinexWebsocketClient(ILoggerFactory loggerFactory)
+    public BitfinexWebsocketClient(ILoggerFactory loggerFactory, Uri? uri = null)
     {
         _logger = loggerFactory.CreateLogger<BitfinexWebsocketClient>();
+        _connectAddress = uri ?? new Uri("wss://api-pub.bitfinex.com/ws/2");
 
         _channelManager = new ChannelManager(loggerFactory);
         _subscriptionManager = new SubscriptionManager(loggerFactory.CreateLogger<SubscriptionManager>());

@@ -31,7 +31,7 @@ public class SubscribedEventHandler(
         }
         else if (eventJson.TryGetProperty(ResponseProps.Key, out pairElement))
         {
-            pair = pairElement.GetString()?.Split(':').Last();
+            pair = pairElement.GetString()?.Split(':').Last().Substring(1);
         }
 
         if (pair == null)
